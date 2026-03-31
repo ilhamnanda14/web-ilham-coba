@@ -38,17 +38,21 @@
             font-size: var(--ukuran-font-isi);
         }
 
-        /* Header Dinamis (Sticky) */
+        /* Header Dinamis (Ikut ke-scroll dan ujung bawah melengkung) */
         header {
             background-color: var(--warna-header);
             color: var(--teks-header);
             display: flex;
             align-items: center;
             padding: 15px 30px;
-            position: sticky;
-            top: 0;
             z-index: 1000;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            
+            /* Ini kode untuk melengkungkan sudut bawah kiri dan kanan */
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            
+            /* Catatan: position: sticky; dan top: 0; sudah dihapus agar header tidak diam di tempat */
         }
 
         .logo {
