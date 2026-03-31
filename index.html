@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ilham Nanda Uji Coba Web</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* Mengatur tampilan agar rapi */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        /* Mengatur ukuran peta */
+        #map {
+            height: 500px; /* Tinggi peta */
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ilham Nanda Uji Coba Web</h1>
+
+    <div class="content">
+        <h2>Latar Belakang</h2>
+        <p>Ini adalah teks blablabla untuk menjelaskan latar belakang dari monitoring. Nanti kamu bisa mengganti teks ini dengan penjelasan detail mengenai apa yang sedang dipantau, dan metode apa yang digunakan (misalnya hasil olahan Google Earth Engine).</p>
+
+        <h2>Tujuan</h2>
+        <p>Tujuan dari visualisasi ini adalah blablabla... Di bawah ini adalah contoh peta interaktif sementara yang bisa di zoom in dan zoom out. Nanti kita akan ganti dengan peta hasil monitoring aslinya.</p>
+    </div>
+
+    <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // 1. Memunculkan peta dan mengatur titik tengah (misal: koordinat Indonesia) serta level zoom
+    var map = L.map('map').setView([-0.7893, 113.9213], 5);
+
+    // 2. Menambahkan peta dasar (basemap) dari OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // 3. Menambahkan pin lokasi contoh (dummy)
+    var marker = L.marker([-7.7956, 110.3695]).addTo(map);
+    marker.bindPopup("<b>Halo Ilham!</b><br>Ini adalah titik contoh. Nanti datamu masuk ke sini.").openPopup();
+</script>
+
+</body>
+</html>
