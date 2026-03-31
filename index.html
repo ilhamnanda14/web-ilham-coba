@@ -49,8 +49,8 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             
             /* Ini kode untuk melengkungkan sudut bawah kiri dan kanan */
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
             
             /* Catatan: position: sticky; dan top: 0; sudah dihapus agar header tidak diam di tempat */
         }
@@ -105,15 +105,15 @@
             border-radius: var(--lengkungan-card);
             padding: 25px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Efek bayangan halus */
-            transition: transform 0.4s; /* Efek saat di-hover */
+            transition: transform 0.5s; /* Efek saat di-hover */
         }
 
         .card:hover {
-            transform: translateY(-5px); /* Card sedikit naik saat ditunjuk mouse */
+            transform: translateY(-4px); /* Card sedikit naik saat ditunjuk mouse */
         }
 
         .card-title {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--teks-judul-card);
             text-transform: uppercase;
             font-weight: bold;
@@ -125,7 +125,7 @@
 
         .card-content {
             line-height: 1.6;
-            text-align: justify;
+            text-align: center;
         }
 
         /* Pengaturan Peta dan Slider Time Series */
