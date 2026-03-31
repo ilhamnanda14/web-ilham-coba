@@ -149,6 +149,55 @@
             border-radius: 10px;
             z-index: 1;
         }
+
+        /* ====================================
+           Pengaturan Slider Penjelasan Hasil 
+           ==================================== */
+        .slider-wrapper {
+            position: relative;
+            overflow: hidden; /* Sembunyikan bagian yang digeser */
+            width: 100%;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px 0;
+        }
+        .slides-container {
+            display: flex;
+            transition: transform 0.4s ease-in-out; /* Animasi geser yang mulus */
+        }
+        .slide {
+            min-width: 100%; /* Setiap slide ukurannya selebar kotaknya */
+            box-sizing: border-box;
+            padding: 0 25px;
+        }
+        .slide h3 {
+            color: var(--warna-header);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .slider-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .slider-nav button {
+            background-color: var(--warna-header);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .slider-nav button:hover {
+            opacity: 0.8;
+        }
+        #slideIndikator {
+            font-weight: bold;
+            color: var(--teks-judul-card);
+        }
     </style>
 </head>
 <body>
@@ -186,7 +235,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card card-full">
             <div class="card-title">Data dan Metode</div>
             <div class="card-content">
                 Kosongkan dulu
@@ -201,15 +250,41 @@
                     <input type="range" id="yearSlider" min="2015" max="2023" value="2023" step="1" oninput="document.getElementById('yearLabel').innerText = this.value">
                     <span id="yearLabel" style="font-weight: bold; font-size: 18px; color: #1e3a8a;">2023</span>
                 </div>
-                
                 <div id="map"></div>
             </div>
         </div>
 
-         <div class="card">
+        <div class="card card-full">
             <div class="card-title">Penjelasan Hasil</div>
             <div class="card-content">
-                Kosongkan dulu
+                
+                <div class="slider-wrapper">
+                    <div class="slides-container" id="slidesContainer">
+                        
+                        <div class="slide">
+                            <h3>1. Deteksi Perubahan</h3>
+                            <p>Isi penjelasan tentang deteksi perubahan di sini. Nanti teksnya bisa sepanjang apa pun, tidak akan memakan tempat ke bawah karena bisa digeser.</p>
+                        </div>
+                        
+                        <div class="slide">
+                            <h3>2. Analisis Temporal</h3>
+                            <p>Isi penjelasan analisis temporal di sini. Kamu tinggal mengganti teks ini nanti.</p>
+                        </div>
+                        
+                        <div class="slide">
+                            <h3>3. Interpretasi</h3>
+                            <p>Isi penjelasan interpretasi di sini. Tulis kesimpulan dari hasil visualisasimu.</p>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="slider-nav">
+                    <button onclick="geserSlide(-1)">&#10094; Sebelumnya</button>
+                    <span id="slideIndikator">1 / 3</span>
+                    <button onclick="geserSlide(1)">Selanjutnya &#10095;</button>
+                </div>
+
             </div>
         </div>
 
@@ -230,6 +305,28 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Logika Slider Penjelasan Hasil
+        let slideSaatIni = 0;
+        const totalSlide = 3;
+
+        function geserSlide(arah) {
+            slideSaatIni += arah;
+            
+            // Logika agar kalau mentok kembali ke awal/akhir
+            if (slideSaatIni >= totalSlide) {
+                slideSaatIni = 0;
+            } else if (slideSaatIni < 0) {
+                slideSaatIni = totalSlide - 1;
+            }
+            
+            // Menggeser kontainer slide (100% per slide)
+            document.getElementById('slidesContainer').style.transform = `translateX(-${slideSaatIni * 100}%)`;
+            
+            // Update teks angka (1 / 3, dst)
+            document.getElementById('slideIndikator').innerText = `${slideSaatIni + 1} / ${totalSlide}`;
+        }
+    </script>
     <script>
         // Fokus peta ke Pantai Kuta, Bali
         var map = L.map('map').setView([-8.7185, 115.1686], 13);
