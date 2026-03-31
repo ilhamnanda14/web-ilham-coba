@@ -25,6 +25,11 @@
             --ukuran-font-isi: 16px;          /* Ukuran teks biasa */
             --ukuran-font-judul: 24px;        /* Ukuran judul di header */
             --lengkungan-card: 20px;          /* Tingkat kelengkungan sudut card (jangan terlalu menyiku) */
+
+            /* Tambahan Pengaturan untuk Pop-Up */
+            --warna-bg-popup: #ffffff;        /* Warna background kotak popup */
+            --lengkungan-popup: 20px;         /* Tingkat kelengkungan sudut popup */
+            --bayangan-popup: rgba(0,0,0,0.6);/* Warna kegelapan di luar popup (0.6 adalah opacity) */
         }
 
         /* ========================================================= */
@@ -77,6 +82,69 @@
             font-size: 18px;
             font-weight: bold;
             color: #cbd5e1;
+        }
+
+        /* =========================================================
+           Tombol Menu & Pop-up Anggota
+           ========================================================= */
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--teks-header);
+            font-size: 30px; /* Ukuran icon garis tiga */
+            cursor: pointer;
+            width: 70px; /* Dibuat sama dengan lebar logo agar teks judul tetap pas di tengah */
+            text-align: right;
+            padding: 0;
+        }
+
+        .menu-btn:hover {
+            opacity: 0.8;
+        }
+
+        .popup-overlay {
+            display: none; /* Disembunyikan dari awal */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bayangan-popup); /* Efek gelap di luar kotak */
+            z-index: 2000; /* Dibuat sangat tinggi agar menutupi segalanya */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px); /* Tambahan efek blur yang keren (opsional) */
+        }
+
+        .popup-card {
+            background-color: var(--warna-bg-popup);
+            color: var(--teks-isi-card);
+            padding: 30px;
+            border-radius: var(--lengkungan-popup);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 400px; /* Ukuran pop-up tidak akan terlalu besar */
+            animation: popMuncul 0.3s ease-out; /* Animasi muncul mulus */
+        }
+
+        .popup-card h3 {
+            color: var(--warna-header);
+            margin-top: 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .popup-card p {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        @keyframes popMuncul {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         /* Layout Grid untuk Card */
@@ -208,7 +276,7 @@
             <h1>Pemantauan Transformasi Pesisir Menggunakan GeoAI & Data Time Series</h1>
             <h2>Kelompok 10 - PWP</h2>
         </div>
-        <div style="width: 90px;"></div> 
+        <button class="menu-btn" onclick="bukaPopup()">&#9776;</button> 
     </header>
 
     <div class="container">
@@ -262,17 +330,17 @@
                     <div class="slides-container" id="slidesContainer">
                         
                         <div class="slide">
-                            <h3>1. Deteksi Perubahan</h3>
+                            <h3>Deteksi Perubahan</h3>
                             <p>Blm ada ges, nnti diisi.</p>
                         </div>
                         
                         <div class="slide">
-                            <h3>2. Analisis Temporal</h3>
+                            <h3>Analisis Temporal</h3>
                             <p>Ini jg blm adaaaaa.</p>
                         </div>
                         
                         <div class="slide">
-                            <h3>3. Interpretasi</h3>
+                            <h3>Interpretasi</h3>
                             <p>Yh sm deh, blm ada jg.</p>
                         </div>
 
@@ -304,6 +372,19 @@
 
     </div>
 
+    <div id="popupAnggota" class="popup-overlay" onclick="tutupPopup(event)">
+        <div class="popup-card">
+            <h3>Anggota Kelompok 10</h3>
+            <p>1. Yasirat Rangga Dewa</p>
+            <p>2. Ridho Fadhil Ardhana</p>
+            <p>3. Rizal Ahmad Fahreza</p>
+            <p>4. Abil Pilar Surastu</p>
+            <p>5. Alif Zacky Gunawan</p>
+            <p>6. Ilham Nanda Ryantama</p>
+            <p>7. Daman Nabil Eralana</p>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // Logika Slider Penjelasan Hasil
@@ -325,6 +406,19 @@
             
             // Update teks angka (1 / 3, dst)
             document.getElementById('slideIndikator').innerText = `${slideSaatIni + 1} / ${totalSlide}`;
+        }
+
+        // Logika Pop-Up Anggota
+        function bukaPopup() {
+            // Memunculkan pop-up dengan display flex (agar posisinya tetap di tengah)
+            document.getElementById('popupAnggota').style.display = 'flex';
+        }
+
+        function tutupPopup(event) {
+            // Logika cerdas: Hanya menutup jika yang diklik adalah background gelapnya (bukan kotaknya)
+            if (event.target.id === 'popupAnggota') {
+                document.getElementById('popupAnggota').style.display = 'none';
+            }
         }
     </script>
     <script>
