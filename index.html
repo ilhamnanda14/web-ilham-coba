@@ -3,75 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ilham Nanda Uji Coba Web</title>
+    <title>Dashboard Pemantauan Pesisir Kuta</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <style>
-        /* Mengatur tampilan agar rapi */
+        /* =========================================================
+           PENGATURAN WARNA & UKURAN (KAMU BISA GANTI DI SINI!)
+           ========================================================= */
+        :root {
+            --warna-background: #6A89A7;      /* Warna latar belakang web */
+            --warna-header: #384959;          /* Warna biru tua untuk header */
+            --teks-header: #ffffff;           /* Warna teks di header */
+            --warna-card: #ffffff81;            /* Warna latar belakang kotak/card */
+            --teks-judul-card: #1e3a8a;       /* Warna teks judul kecil di dalam card */
+            --teks-isi-card: #333333;         /* Warna teks isi tulisan */
+            
+            --ukuran-font-isi: 16px;          /* Ukuran teks biasa */
+            --ukuran-font-judul: 24px;        /* Ukuran judul di header */
+            --lengkungan-card: 20px;          /* Tingkat kelengkungan sudut card (jangan terlalu menyiku) */
+        }
+
+        /* ========================================================= */
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--warna-background);
+            color: var(--teks-isi-card);
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            font-size: var(--ukuran-font-isi);
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+
+        /* Header Dinamis (Sticky) */
+        header {
+            background-color: var(--warna-header);
+            color: var(--teks-header);
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        h1 {
+
+        .logo {
+            width: 70px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .header-text {
+            flex-grow: 1;
             text-align: center;
-            color: #2c3e50;
+            font-weight: bold;
         }
-        .content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+
+        .header-text h1 {
+            margin: 0;
+            font-size: var(--ukuran-font-judul);
+        }
+
+        .header-text h2 {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #cbd5e1;
+        }
+
+        /* Layout Grid untuk Card */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr; /* Default 1 kolom untuk HP */
+            gap: 25px;
+        }
+
+        /* Jika dibuka di Laptop/PC, otomatis jadi 2 kolom */
+        @media(min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .card-full {
+                grid-column: 1 / -1; /* Card map mengambil lebar penuh (2 kolom) */
+            }
+        }
+
+        /* Style untuk Kotak (Card) */
+        .card {
+            background-color: var(--warna-card);
+            border-radius: var(--lengkungan-card);
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Efek bayangan halus */
+            transition: transform 0.2s; /* Efek saat di-hover */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Card sedikit naik saat ditunjuk mouse */
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: var(--teks-judul-card);
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+
+        .card-content {
             line-height: 1.6;
+            text-align: justify;
         }
-        /* Mengatur ukuran peta */
-        #map {
-            height: 500px; /* Tinggi peta */
-            width: 100%;
+
+        /* Pengaturan Peta dan Slider Time Series */
+        .slider-container {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f8fafc;
+            padding: 10px 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .slider-container input {
+            flex-grow: 1;
+        }
+
+        #map {
+            height: 450px;
+            width: 100%;
+            border-radius: 10px;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Ilham Nanda Uji Coba Web</h1>
+    <header>
+        <img src="https://upload.wikimedia.org/wikipedia/id/thumb/b/b6/Logo_Universitas_Gadjah_Mada.png/640px-Logo_Universitas_Gadjah_Mada.png" class="logo" alt="Logo UGM">
+        <div class="header-text">
+            <h1>Pemantauan Transformasi Pesisir Menggunakan GeoAI & Data Time Series</h1>
+            <h2>Kelompok 10 - PWP</h2>
+        </div>
+        <div style="width: 90px;"></div> 
+    </header>
 
-    <div class="content">
-        <h2>Latar Belakang</h2>
-        <p>Ini adalah teks blablabla untuk menjelaskan latar belakang dari monitoring. Nanti kamu bisa mengganti teks ini dengan penjelasan detail mengenai apa yang sedang dipantau, dan metode apa yang digunakan (misalnya hasil olahan Google Earth Engine).</p>
+    <div class="container">
 
-        <h2>Tujuan</h2>
-        <p>Tujuan dari visualisasi ini adalah blablabla... Di bawah ini adalah contoh peta interaktif sementara yang bisa di zoom in dan zoom out. Nanti kita akan ganti dengan peta hasil monitoring aslinya.</p>
+        <div class="card card-full">
+            <div class="card-title">Judul</div>
+            <div class="card-content">
+                <strong>Deteksi Perubahan Garis Pantai Berbasis Google Earth Engine pada Wilayah Abrasi Pesisir Kuta</strong>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Lokasi Monitoring</div>
+            <div class="card-content">
+                Kecamatan Kuta, Kabupaten Badung, Provinsi Bali, Indonesia
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Latar Belakang</div>
+            <div class="card-content">
+                Wilayah pesisir kuta termasuk daerah yang sangat dinamis dan rentan terkait perubahan morfologi pantai. Perubahan dapat terjadi karena dipengaruhi oleh beberapa faktor seperti gelombang laut dan arus, pembangunan infrastruktur pesisir, aktivitas pariwisata, serta perubahan transport sedimen yang terjadi pada dasar laut.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Data dan Metode</div>
+            <div class="card-content">
+                Kosongkan dulu
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Penjelasan Hasil</div>
+            <div class="card-content">
+                Kosongkan dulu
+            </div>
+        </div>
+
+        <div class="card card-full">
+            <div class="card-title">Visualisasi Hasil</div>
+            <div class="card-content">
+                <div class="slider-container">
+                    <label for="yearSlider"><b>Tahun Data:</b></label>
+                    <input type="range" id="yearSlider" min="2015" max="2023" value="2023" step="1" oninput="document.getElementById('yearLabel').innerText = this.value">
+                    <span id="yearLabel" style="font-weight: bold; font-size: 18px; color: #1e3a8a;">2023</span>
+                </div>
+                
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Kesimpulan</div>
+            <div class="card-content">
+                Kosongkan dulu
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Sumber Data dan Referensi</div>
+            <div class="card-content">
+                Kosongkan dulu
+            </div>
+        </div>
+
     </div>
 
-    <div id="map"></div>
-</div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Fokus peta ke Pantai Kuta, Bali
+        var map = L.map('map').setView([-8.7185, 115.1686], 13);
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    // 1. Memunculkan peta dan mengatur titik tengah (misal: koordinat Indonesia) serta level zoom
-    var map = L.map('map').setView([-0.7893, 113.9213], 5);
+        // Basemap dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
-    // 2. Menambahkan peta dasar (basemap) dari OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+        // Contoh Marker (Nanti bisa dihapus jika data GEE sudah ada)
+        var marker = L.marker([-8.7185, 115.1686]).addTo(map);
+        marker.bindPopup("<b>Pantai Kuta</b><br>Fokus Area Monitoring.").openPopup();
 
-    // 3. Menambahkan pin lokasi contoh (dummy)
-    var marker = L.marker([-7.7956, 110.3695]).addTo(map);
-    marker.bindPopup("<b>Halo Ilham!</b><br>Ini adalah titik contoh. Nanti datamu masuk ke sini.").openPopup();
-</script>
+        // Nanti kode untuk mengganti layer GEE berdasarkan slider ditaruh di sini
+    </script>
 
 </body>
 </html>
