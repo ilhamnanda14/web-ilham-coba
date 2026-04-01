@@ -35,6 +35,12 @@
             --bayangan-popup: rgba(0,0,0,0.6);
         }
 
+        /* TAMBAHAN BARU: Mengunci layar dari akar (html dan body) */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             background-color: var(--warna-background);
@@ -42,10 +48,8 @@
             margin: 0;
             padding: 0;
             font-size: var(--ukuran-font-isi);
-            
-            /* TAMBAHAN BARU: Mengunci layar agar tidak bisa digeser ke kanan/kiri */
-            overflow-x: hidden; 
             width: 100%;
+            position: relative; /* Menjaga elemen di dalamnya tidak keluar batas */
         }
 
         /* Header Dinamis */
@@ -74,6 +78,8 @@
             flex-grow: 1;
             text-align: center;
             font-weight: bold;
+            padding: 0 10px; /* Memberi jarak agar teks tidak menabrak logo & menu */
+            word-wrap: break-word; /* Memaksa kata yang kepanjangan untuk turun ke bawah */
         }
 
         .header-text h1 {
@@ -240,7 +246,14 @@
 
         .card-content {
             line-height: 1.6;
-            text-align: center;
+            text-align: justify; /* Ubah ini menjadi rata kanan-kiri agar rapi seperti di buku/jurnal */
+        }
+
+        /* Tambahan agar gambar di dalam card (seperti foto Kuta) tidak membludak keluar kotak */
+        .card-content img {
+            max-width: 100%;
+            height: auto;
+            display: block; /* Mencegah ada celah kosong di bawah gambar */
         }
 
         /* Pengaturan Peta dan Slider Time Series */
