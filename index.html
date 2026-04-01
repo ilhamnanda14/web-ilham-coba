@@ -6,7 +6,6 @@
     <title>Dashboard Pemantauan Pesisir Kuta</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
@@ -24,15 +23,13 @@
 
             --ukuran-font-isi: 16px;          /* Ukuran teks biasa */
             --ukuran-font-judul: 24px;        /* Ukuran judul di header */
-            --lengkungan-card: 20px;          /* Tingkat kelengkungan sudut card (jangan terlalu menyiku) */
+            --lengkungan-card: 20px;          /* Tingkat kelengkungan sudut card */
 
             /* Tambahan Pengaturan untuk Pop-Up */
             --warna-bg-popup: #ffffff;        /* Warna background kotak popup */
             --lengkungan-popup: 20px;         /* Tingkat kelengkungan sudut popup */
-            --bayangan-popup: rgba(0,0,0,0.6);/* Warna kegelapan di luar popup (0.6 adalah opacity) */
+            --bayangan-popup: rgba(0,0,0,0.6);/* Warna kegelapan di luar popup */
         }
-
-        /* ========================================================= */
 
         body {
             font-family: 'Roboto', sans-serif;
@@ -43,7 +40,7 @@
             font-size: var(--ukuran-font-isi);
         }
 
-        /* Header Dinamis (Ikut ke-scroll dan ujung bawah melengkung) */
+        /* Header Dinamis */
         header {
             background-color: var(--warna-header);
             color: var(--teks-header);
@@ -52,12 +49,8 @@
             padding: 15px 30px;
             z-index: 1000;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            
-            /* Ini kode untuk melengkungkan sudut bawah kiri dan kanan */
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            
-            /* Catatan: position: sticky; dan top: 0; sudah dihapus agar header tidak diam di tempat */
         }
 
         .logo {
@@ -75,6 +68,7 @@
         .header-text h1 {
             margin: 0;
             font-size: var(--ukuran-font-judul);
+            line-height: 1.2;
         }
 
         .header-text h2 {
@@ -91,9 +85,9 @@
             background: none;
             border: none;
             color: var(--teks-header);
-            font-size: 30px; /* Ukuran icon garis tiga */
+            font-size: 30px; 
             cursor: pointer;
-            width: 70px; /* Dibuat sama dengan lebar logo agar teks judul tetap pas di tengah */
+            width: 70px; 
             text-align: right;
             padding: 0;
         }
@@ -103,17 +97,17 @@
         }
 
         .popup-overlay {
-            display: none; /* Disembunyikan dari awal */
+            display: none; 
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bayangan-popup); /* Efek gelap di luar kotak */
-            z-index: 2000; /* Dibuat sangat tinggi agar menutupi segalanya */
+            background-color: var(--bayangan-popup); 
+            z-index: 2000; 
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(3px); /* Tambahan efek blur yang keren (opsional) */
+            backdrop-filter: blur(3px); 
         }
 
         .popup-card {
@@ -124,8 +118,8 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             width: 80%;
-            max-width: 400px; /* Ukuran pop-up tidak akan terlalu besar */
-            animation: popMuncul 0.3s ease-out; /* Animasi muncul mulus */
+            max-width: 400px; 
+            animation: popMuncul 0.3s ease-out; 
         }
 
         .popup-card h3 {
@@ -153,7 +147,7 @@
             margin: 40px auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: 1fr; /* Default 1 kolom untuk HP */
+            grid-template-columns: 1fr; 
             gap: 25px;
         }
 
@@ -163,21 +157,63 @@
                 grid-template-columns: 1fr 1fr;
             }
             .card-full {
-                grid-column: 1 / -1; /* Card map mengambil lebar penuh (2 kolom) */
+                grid-column: 1 / -1; 
             }
         }
+
+        /* =========================================================
+           RESPONSIVENESS KHUSUS HP (Memperbaiki tampilan berantakan)
+           ========================================================= */
+        @media(max-width: 767px) {
+            header {
+                padding: 15px; /* Padding dikecilkan */
+            }
+            .logo {
+                width: 45px; /* Logo lebih kecil */
+                margin-right: 10px;
+            }
+            .header-text h1 {
+                font-size: 15px; /* Judul lebih pas di HP */
+            }
+            .header-text h2 {
+                font-size: 12px; /* Sub-judul lebih kecil */
+            }
+            .menu-btn {
+                width: 45px;
+                font-size: 24px; /* Ikon lebih ramping */
+            }
+            .card {
+                padding: 15px; /* Kotak tidak terlalu tebal di HP */
+            }
+            .slider-container {
+                flex-direction: column; /* Slider peta ditumpuk ke bawah di HP */
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .slider-container input {
+                width: 100%;
+            }
+            .slider-nav button {
+                padding: 6px 12px;
+                font-size: 13px; /* Tombol geser disesuaikan */
+            }
+            #map {
+                height: 300px; /* Peta tidak memakan seluruh layar HP */
+            }
+        }
+        /* ========================================================= */
 
         /* Style untuk Kotak (Card) */
         .card {
             background-color: var(--warna-card);
             border-radius: var(--lengkungan-card);
             padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Efek bayangan halus */
-            transition: transform 0.5s; /* Efek saat di-hover */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            transition: transform 0.5s; 
         }
 
         .card:hover {
-            transform: translateY(-4px); /* Card sedikit naik saat ditunjuk mouse */
+            transform: translateY(-4px); 
         }
 
         .card-title {
@@ -218,12 +254,10 @@
             z-index: 1;
         }
 
-        /* ====================================
-           Pengaturan Slider Penjelasan Hasil 
-           ==================================== */
+        /* Pengaturan Slider Penjelasan Hasil */
         .slider-wrapper {
             position: relative;
-            overflow: hidden; /* Sembunyikan bagian yang digeser */
+            overflow: hidden; 
             width: 100%;
             border-radius: 8px;
             background: #f8fafc;
@@ -232,10 +266,10 @@
         }
         .slides-container {
             display: flex;
-            transition: transform 0.4s ease-in-out; /* Animasi geser yang mulus */
+            transition: transform 0.4s ease-in-out; 
         }
         .slide {
-            min-width: 100%; /* Setiap slide ukurannya selebar kotaknya */
+            min-width: 100%; 
             box-sizing: border-box;
             padding: 0 25px;
         }
@@ -291,7 +325,7 @@
         <div class="card">
             <div class="card-title">Lokasi Monitoring</div>
             <div class="card-content">
-                <img src="assets/kuta.jpg" alt="Citra Satelit Pantai Kuta" style="width: 100%; border-radius: 8px; margin-top: 10px;">
+                <img src="assets/kuta.jpg" alt="Citra Satelit Pantai Kuta" style="width: 100%; border-radius: 8px; margin-top: 10px; margin-bottom: 10px;">
                 Kecamatan Kuta, Kabupaten Badung, Provinsi Bali, Indonesia
             </div>
         </div>
@@ -394,28 +428,22 @@
         function geserSlide(arah) {
             slideSaatIni += arah;
             
-            // Logika agar kalau mentok kembali ke awal/akhir
             if (slideSaatIni >= totalSlide) {
                 slideSaatIni = 0;
             } else if (slideSaatIni < 0) {
                 slideSaatIni = totalSlide - 1;
             }
             
-            // Menggeser kontainer slide (100% per slide)
             document.getElementById('slidesContainer').style.transform = `translateX(-${slideSaatIni * 100}%)`;
-            
-            // Update teks angka (1 / 3, dst)
             document.getElementById('slideIndikator').innerText = `${slideSaatIni + 1} / ${totalSlide}`;
         }
 
         // Logika Pop-Up Anggota
         function bukaPopup() {
-            // Memunculkan pop-up dengan display flex (agar posisinya tetap di tengah)
             document.getElementById('popupAnggota').style.display = 'flex';
         }
 
         function tutupPopup(event) {
-            // Logika cerdas: Hanya menutup jika yang diklik adalah background gelapnya (bukan kotaknya)
             if (event.target.id === 'popupAnggota') {
                 document.getElementById('popupAnggota').style.display = 'none';
             }
@@ -425,16 +453,12 @@
         // Fokus peta ke Pantai Kuta, Bali
         var map = L.map('map').setView([-8.7185, 115.1686], 13);
 
-        // Basemap dari OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Contoh Marker (Nanti bisa dihapus jika data GEE sudah ada)
         var marker = L.marker([-8.7185, 115.1686]).addTo(map);
         marker.bindPopup("<b>Pantai Kuta</b><br>Fokus Area Monitoring.").openPopup();
-
-        // Nanti kode untuk mengganti layer GEE berdasarkan slider ditaruh di sini
     </script>
 
 </body>
