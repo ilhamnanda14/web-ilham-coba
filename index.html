@@ -7,6 +7,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         /* 1. RESET & ANTI-BOCOR PALING KUAT (Wajib Ada) */
@@ -188,6 +189,16 @@
         }
         footer p { margin: 3px 0; }
 
+        /* CSS Khusus Wadah Grafik agar Responsif */
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 350px; /* Tinggi grafik di laptop */
+            width: 100%;
+        }
+        @media(max-width: 767px) {
+            .chart-container { height: 250px; } /* Tinggi grafik menyesuaikan kalau dibuka di HP */
+        }
     </style>
 </head>
 <body>
@@ -254,6 +265,15 @@
                     <span id="yearLabel" style="font-weight: bold; font-size: 18px; color: #1e3a8a;">2026</span>
                 </div>
                 <div id="map"></div>
+            </div>
+        </div>
+
+        <div class="card card-full">
+            <div class="card-title">Tren Perubahan Garis Pantai (2022–2026)</div>
+            <div class="card-content">
+                <div class="chart-container">
+                    <canvas id="trenChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -452,6 +472,61 @@
             // Panggil fungsi ganti peta
             if (semuaDataPantai) {
                 updatePeta(tahunDipilih);
+            }
+        });
+
+        // =========================================================
+        // 4. FUNGSI GRAFIK TREN PERUBAHAN (CHART.JS)
+        // =========================================================
+        var ctxTren = document.getElementById('trenChart').getContext('2d');
+        
+        var trenChart = new Chart(ctxTren, {
+            type: 'line', // Jenis grafik: Garis (Line)
+            data: {
+                labels: ['2022', '2023', '2024', '2025', '2026'], // Sumbu X (Tahun)
+                datasets: [{
+                    label: 'jarak',
+                    // VVVVV --- GANTI ANGKA DI BAWAH INI DENGAN DATA ASLIMU --- VVVVV
+                    data: [60.5, 51.0, 57.5, 63.8, 39.8], 
+                    // ^^^^^ -------------------------------------------------- ^^^^^
+                    borderColor: '#2563eb', // Warna garis biru 
+                    backgroundColor: '#2563eb', // Warna titik biru
+                    borderWidth: 2,
+                    pointRadius: 4, // Ukuran bulatan titik
+                    pointHoverRadius: 7, // Membesar saat disorot mouse
+                    tension: 0 // Angka 0 bikin garisnya lurus patah-patah kayak di gambarmu
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Menyesuaikan tinggi kotak CSS
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        align: 'end', // Posisi legenda 'jarak' di kanan atas
+                        labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'circle' }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' m'; // Tambah huruf 'm' pas disorot
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Tahun', font: { style: 'italic' } },
+                        grid: { display: false } // Hilangkan garis tegak berbayang
+                    },
+                    y: {
+                        title: { display: true, text: 'Jarak (m)', font: { style: 'italic' } },
+                        min: 35, // Batas bawah angka Y (biar persis kayak di gambarmu)
+                        max: 65, // Batas atas angka Y
+                        ticks: { stepSize: 5 } // Kelipatan angkanya (35, 40, 45, dst)
+                    }
+                }
             }
         });
     </script>
