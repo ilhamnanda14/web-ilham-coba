@@ -150,6 +150,44 @@
             .slider-map { flex-direction: row; align-items: center; }
             #map { height: 450px; }
         }
+
+        /* =========================================================
+           8. DESAIN LEGENDA PETA & FOOTER
+           ========================================================= */
+        /* Desain Kotak Legenda di dalam Peta */
+        .info.legend {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .info.legend i {
+            width: 16px;
+            height: 16px;
+            float: left;
+            margin-right: 8px;
+            border-radius: 3px;
+        }
+
+        /* Desain Footer Paling Bawah */
+        footer {
+            background-color: var(--warna-header);
+            color: var(--teks-header);
+            text-align: center;
+            padding: 20px 15px;
+            margin-top: 50px; 
+            font-size: 14px;
+            line-height: 1.6;
+            
+            /* Tambahan pengunci full layar */
+            width: 100%;
+            display: block;
+        }
+        footer p { margin: 3px 0; }
+
     </style>
 </head>
 <body>
@@ -168,7 +206,7 @@
         <div class="card card-full">
             <div class="card-title">Judul</div>
             <div class="card-content tengah">
-                <strong>Deteksi Perubahan Garis Pantai Berbasis Google Earth Engine pada Wilayah Abrasi Pesisir Kuta</strong>
+                <strong>Deteksi Perubahan Garis Pantai Berbasis Google Earth Engine pada Wilayah Abrasi Pesisir Kuta Pada Tahun 2022 hingga Tahun 2026</strong>
             </div>
         </div>
 
@@ -189,8 +227,12 @@
 
         <div class="card card-full">
             <div class="card-title">Data dan Metode</div>
-            <div class="card-content tengah">
-                Kosongkan dulu
+            <div class="card-content">
+                <ol style="padding-left: 20px; margin-top: 0; margin-bottom: 0;">
+                    <li style="margin-bottom: 10px;">Data AOI batas wilayah kawasan pesisir Pantai Kuta, Bali.</li>
+                    <li style="margin-bottom: 10px;">Citra satelit Sentinel-2A dengan resolusi spasial 10 meter periode tahun 2022 hingga 2026 diperoleh melalui platform Google Earth Engine.</li>
+                    <li>Data Garis Pantai (Shoreline) yang diekstraksi dari citra Sentinel-2A setiap tahun menggunakan pendekatan indeks air <i>Normalized Difference Water Index</i> (NDWI), untuk memisahkan daratan dan perairan. Hasil ekstraksi ini kemudian dikonversi menjadi data vektor (shapefile) yang digunakan dalam analisis perubahan garis pantai.</li>
+                </ol>
             </div>
         </div>
 
@@ -243,7 +285,10 @@
             <div class="card-content tengah">Kosongkan dulu</div>
         </div>
 
-    </main>
+    </main> <footer>
+        <p><strong>Kelompok 10 - Pengelolaan Wilayah Pesisir</strong></p>
+        <p>Dosen Pembimbing: I Made Andi Arsana, S.T., M.E., Ph.D</p>
+    </footer>
 
     <div id="popupAnggota" class="popup-overlay" onclick="tutupPopup(event)">
         <div class="popup-card">
@@ -286,6 +331,17 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
+
+        // --- MEMBUAT LEGENDA PETA ---
+        var legend = L.control({position: 'bottomright'}); // Posisi di kanan bawah peta
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML += '<b style="color:var(--warna-header)">Keterangan LRR</b><br>';
+            div.innerHTML += '<i style="background: #ef4444"></i> Abrasi (< 0 m/th)<br>';
+            div.innerHTML += '<i style="background: #3b82f6"></i> Akresi (> 0 m/th)<br>';
+            return div;
+        };
+        legend.addTo(map);
 
         // Siapkan variabel penampung data
         var layerGarisPantai;
