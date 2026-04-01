@@ -66,14 +66,30 @@
             grid-template-columns: 1fr;
             gap: 15px;
         }
+        /* --- UPDATE DI SINI --- */
         .card {
             background-color: var(--warna-card);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             width: 100%;
-            min-width: 0; /* KUNCI RAHASIA: Memaksa kotak tidak kebablasan */
-            overflow-wrap: break-word; /* Teks kepanjangan dipaksa turun */
+            min-width: 0; 
+            overflow-wrap: break-word; 
+            
+            /* TAMBAHAN: Biar gerakannya mulus, gak kaku */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* TAMBAHAN: Efek saat kursor menunjuk card (Naik & bayangan membesar) */
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* TAMBAHAN: Efek saat card diklik/disentuh di HP (Turun sedikit seperti tombol) */
+        .card:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .card-title {
             color: var(--teks-judul-card); font-weight: bold; text-align: center;
