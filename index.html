@@ -399,13 +399,36 @@
 
         // --- 3. Fungsi Peta Leaflet & Integrasi GeoJSON ---
         
-        // Inisialisasi Peta (Fokus ke Pantai Kuta)
-        var map = L.map('map').setView([-8.725, 115.1686], 14);
-        
-        // Tambahkan Basemap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // --- 1. DEFINISI PILIHAN BASEMAP ---
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        });
+
+        var satellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            attribution: '&copy; Google Maps'
+        });
+
+        var lightMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors, &copy; CARTO'
+        });
+
+        // --- 2. INISIALISASI PETA ---
+        // Kita set basemap default-nya adalah OSM
+        var map = L.map('map', {
+            center: [-8.725, 115.1686],
+            zoom: 14,
+            layers: [osm] // Ini basemap yang muncul pertama kali
+        });
+
+        // --- 3. MENAMBAHKAN KONTROL PILIHAN LAYER ---
+        var baseMaps = {
+            "Peta Standar (OSM)": osm,
+            "Citra Satelit": satellite,
+            "Peta Terang (Light)": lightMap
+        };
+
+        // Letakkan tombol pilihannya di pojok kanan atas
+        L.control.layers(baseMaps).addTo(map);
 
         // --- MEMBUAT LEGENDA PETA ---
         var legend = L.control({position: 'bottomright'}); // Posisi di kanan bawah peta
