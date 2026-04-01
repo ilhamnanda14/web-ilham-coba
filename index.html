@@ -336,7 +336,7 @@
                         </div>
                         <div class="slide">
                             <h3>Interpretasi</h3>
-                            <p>Yh sm deh, blm ada jg.</p>
+                            <p style="text-align: justify; margin-top: 10px; line-height: 1.6;">Perubahan garis pantai di kawasan Kuta Beach tidak hanya dipengaruhi oleh faktor alami seperti gelombang dan arus laut, tetapi juga sangat berkaitan dengan aktivitas manusia di wilayah pesisir. Salah satu penyebab utama abrasi adalah pembangunan infrastruktur skala besar, termasuk reklamasi dan perluasan Ngurah Rai International Airport yang diperkirakan mencapai sekitar 100 hektar. Pembangunan ini dapat mengubah pola arus dan gelombang laut sehingga meningkatkan potensi erosi di wilayah pantai sekitar Kuta. Selain itu, pembangunan berbagai struktur pantai seperti <i>jetty</i> (bangunan pelindung muara atau pelabuhan), <i>groin</i> (bangunan penahan sedimen), dan dermaga juga dapat memengaruhi distribusi energi gelombang. Struktur tersebut sering kali menyebabkan gelombang terpusat pada titik tertentu sehingga memicu abrasi pada bagian pantai yang tidak terlindungi. Aktivitas pariwisata massal yang berkembang pesat di kawasan Kuta, seperti pembangunan hotel, fasilitas wisata, dan jalur pedestrian di sepanjang pantai, turut berkontribusi terhadap hilangnya vegetasi pantai yang sebelumnya berfungsi sebagai penahan gelombang alami. Hilangnya vegetasi ini meningkatkan tekanan terhadap garis pantai sehingga mempercepat proses erosi.</p>
                         </div>
                     </div>
                 </div>
@@ -415,6 +415,77 @@
             return div;
         };
         legend.addTo(map);
+
+        // =========================================================
+        // --- UPDATE: MEMBUAT ARAH UTARA COMPLEX (SVG MURNI) ---
+        // =========================================================
+        var arahUtaraPro = L.control({position: 'topright'});
+        
+        arahUtaraPro.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'info arah-utara-pro');
+            
+            // --- KODE SVG UNTUK SIMBOL MATA ANGIN COMPLEX ---
+            // Kita bungkus SVG dalam div putih transparan agar senada dengan legenda
+            div.innerHTML = `
+                <div style="background: rgba(255,255,255,0.9); padding: 8px; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,0.4); text-align: center; cursor: default;">
+                    
+                    <svg width="40" height="48" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                        
+                        <circle cx="50" cy="60" r="45" stroke="#1e3a8a" stroke-width="2" fill="none"/>
+                        
+                        <g transform="translate(50, 60)">
+                            
+                            <line x1="0" y1="-45" x2="0" y2="45" stroke="#1e3a8a" stroke-width="2"/>
+                            <line x1="-45" y1="0" x2="45" y2="0" stroke="#1e3a8a" stroke-width="2"/>
+                            
+                            <polygon points="0,-48 10,-20 0,-25 -10,-20" fill="#1e3a8a"/>
+                            <polygon points="48,0 20,10 25,0 20,-10" fill="#1e3a8a"/>
+                            <polygon points="0,48 10,20 0,25 -10,20" fill="#1e3a8a"/>
+                            <polygon points="-48,0 -20,10 -25,0 -20,-10" fill="#1e3a8a"/>
+
+                            <line x1="-30" y1="-30" x2="30" y2="30" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="2,2"/>
+                            <line x1="30" y1="-30" x2="-30" y2="30" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="2,2"/>
+                        </g>
+                        
+                        <text x="50" y="15" text-anchor="middle" font-family="Roboto, sans-serif" font-size="20" font-weight="bold" fill="#1e3a8a">N</text>
+                        <text x="96" y="65" text-anchor="middle" font-family="Roboto, sans-serif" font-size="12" fill="#1e3a8a">E</text>
+                        <text x="50" y="115" text-anchor="middle" font-family="Roboto, sans-serif" font-size="12" fill="#1e3a8a">S</text>
+                        <text x="4" y="65" text-anchor="middle" font-family="Roboto, sans-serif" font-size="12" fill="#1e3a8a">W</text>
+                        
+                    </svg>
+                    </div>
+            `;
+            return div;
+        };
+        
+        arahUtaraPro.addTo(map);
+
+        // =========================================================
+        // --- MEMUNCUKKAN KEMBALI WATERMARK (POJOK KIRI BAWAH) ---
+        // =========================================================
+        var watermark = L.control({position: 'bottomleft'});
+        
+        watermark.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'info-watermark');
+            
+            // Kita buat desainnya senada dengan legenda dan arah utara
+            div.innerHTML = `
+                <div style="background: rgba(255,255,255,0.8); 
+                            padding: 6px 12px; 
+                            border-radius: 6px; 
+                            box-shadow: 0 1px 5px rgba(0,0,0,0.3); 
+                            font-weight: bold; 
+                            color: #1e3a8a; 
+                            font-size: 13px; 
+                            cursor: default;
+                            border-left: 4px solid #1e3a8a;">
+                    Kelompok 10 - PWP
+                </div>
+            `;
+            return div;
+        };
+        
+        watermark.addTo(map);
 
         // Siapkan variabel penampung data
         var layerGarisPantai;
