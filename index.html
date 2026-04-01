@@ -226,13 +226,22 @@
         </div>
 
         <div class="card card-full">
-            <div class="card-title">Data dan Metode</div>
+            <div class="card-title">Data</div>
             <div class="card-content">
                 <ol style="padding-left: 20px; margin-top: 0; margin-bottom: 0;">
                     <li style="margin-bottom: 10px;">Data AOI batas wilayah kawasan pesisir Pantai Kuta, Bali.</li>
                     <li style="margin-bottom: 10px;">Citra satelit Sentinel-2A dengan resolusi spasial 10 meter periode tahun 2022 hingga 2026 diperoleh melalui platform Google Earth Engine.</li>
                     <li>Data Garis Pantai (Shoreline) yang diekstraksi dari citra Sentinel-2A setiap tahun menggunakan pendekatan indeks air <i>Normalized Difference Water Index</i> (NDWI), untuk memisahkan daratan dan perairan. Hasil ekstraksi ini kemudian dikonversi menjadi data vektor (shapefile) yang digunakan dalam analisis perubahan garis pantai.</li>
                 </ol>
+            </div>
+        </div>
+
+        <div class="card card-full">
+            <div class="card-title">Metode</div>
+            <div class="card-content">
+                <p style="margin-top: 0;">Metode yang digunakan adalah <strong>Linear Regression Rate (LRR)</strong>, yaitu metode untuk menghitung laju perubahan garis pantai (m/tahun) berdasarkan data multi-temporal tahun 2022–2026. Metode ini menggunakan regresi linear dengan memodelkan hubungan antara waktu sebagai variabel independen dan posisi garis pantai sebagai variabel dependen, sehingga diperoleh nilai kemiringan (slope) sebagai nilai LRR.</p>
+                
+                <p style="margin-bottom: 0;">Nilai LRR digunakan untuk interpretasi perubahan garis pantai, di mana nilai positif menunjukkan akresi, nilai negatif menunjukkan abrasi, dan nilai mendekati nol menunjukkan kondisi stabil. Keunggulan metode ini adalah memanfaatkan seluruh data <i>time series</i> sehingga hasilnya lebih akurat dan representatif, meskipun sensitif terhadap data ekstrem.</p>
             </div>
         </div>
 
