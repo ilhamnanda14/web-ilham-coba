@@ -9,26 +9,30 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
+        /* TAMBAHAN BARU: Rumus ajaib agar ukuran tidak bocor keluar layar */
+        * {
+            box-sizing: border-box;
+        }
+
         /* =========================================================
            PENGATURAN WARNA & UKURAN (KAMU BISA GANTI DI SINI!)
            ========================================================= */
         :root {
-            --warna-background: #6A89A7;      /* Warna latar belakang web */
-            --warna-header: #384959;          /* Warna biru tua untuk header */
-            --teks-header: #ffffff;           /* Warna teks di header */
-            --warna-card: #ffffff81;            /* Warna latar belakang kotak/card */
-            --teks-judul-card: #1e3a8a;       /* Warna teks judul kecil di dalam card */
-            --teks-isi-card: #333333;         /* Warna teks isi tulisan */
+            --warna-background: #6A89A7;      
+            --warna-header: #384959;          
+            --teks-header: #ffffff;           
+            --warna-card: #ffffff81;            
+            --teks-judul-card: #1e3a8a;       
+            --teks-isi-card: #333333;         
             --warna-dasar: #ffffff;
 
-            --ukuran-font-isi: 16px;          /* Ukuran teks biasa */
-            --ukuran-font-judul: 24px;        /* Ukuran judul di header */
-            --lengkungan-card: 20px;          /* Tingkat kelengkungan sudut card */
+            --ukuran-font-isi: 16px;          
+            --ukuran-font-judul: 24px;        
+            --lengkungan-card: 20px;          
 
-            /* Tambahan Pengaturan untuk Pop-Up */
-            --warna-bg-popup: #ffffff;        /* Warna background kotak popup */
-            --lengkungan-popup: 20px;         /* Tingkat kelengkungan sudut popup */
-            --bayangan-popup: rgba(0,0,0,0.6);/* Warna kegelapan di luar popup */
+            --warna-bg-popup: #ffffff;        
+            --lengkungan-popup: 20px;         
+            --bayangan-popup: rgba(0,0,0,0.6);
         }
 
         body {
@@ -38,6 +42,10 @@
             margin: 0;
             padding: 0;
             font-size: var(--ukuran-font-isi);
+            
+            /* TAMBAHAN BARU: Mengunci layar agar tidak bisa digeser ke kanan/kiri */
+            overflow-x: hidden; 
+            width: 100%;
         }
 
         /* Header Dinamis */
@@ -51,6 +59,9 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
+            
+            /* TAMBAHAN BARU: Memaksa header selalu 100% penuh */
+            width: 100%; 
         }
 
         .logo {
@@ -151,7 +162,6 @@
             gap: 25px;
         }
 
-        /* Jika dibuka di Laptop/PC, otomatis jadi 2 kolom */
         @media(min-width: 768px) {
             .container {
                 grid-template-columns: 1fr 1fr;
@@ -162,31 +172,31 @@
         }
 
         /* =========================================================
-           RESPONSIVENESS KHUSUS HP (Memperbaiki tampilan berantakan)
+           RESPONSIVENESS KHUSUS HP (Telah disempurnakan)
            ========================================================= */
         @media(max-width: 767px) {
             header {
-                padding: 15px; /* Padding dikecilkan */
+                padding: 12px 15px; /* Jarak diringkas agar pas */
             }
             .logo {
-                width: 45px; /* Logo lebih kecil */
+                width: 40px; 
                 margin-right: 10px;
             }
             .header-text h1 {
-                font-size: 15px; /* Judul lebih pas di HP */
+                font-size: 14px; /* Disesuaikan agar tidak nabrak menu */
             }
             .header-text h2 {
-                font-size: 12px; /* Sub-judul lebih kecil */
+                font-size: 11px; 
             }
             .menu-btn {
-                width: 45px;
-                font-size: 24px; /* Ikon lebih ramping */
+                width: 40px;
+                font-size: 24px; 
             }
             .card {
-                padding: 15px; /* Kotak tidak terlalu tebal di HP */
+                padding: 15px; 
             }
             .slider-container {
-                flex-direction: column; /* Slider peta ditumpuk ke bawah di HP */
+                flex-direction: column; 
                 align-items: flex-start;
                 gap: 8px;
             }
@@ -195,10 +205,10 @@
             }
             .slider-nav button {
                 padding: 6px 12px;
-                font-size: 13px; /* Tombol geser disesuaikan */
+                font-size: 13px; 
             }
             #map {
-                height: 300px; /* Peta tidak memakan seluruh layar HP */
+                height: 300px; 
             }
         }
         /* ========================================================= */
@@ -210,6 +220,7 @@
             padding: 25px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
             transition: transform 0.5s; 
+            width: 100%; /* Memastikan kotak tidak lewat layar */
         }
 
         .card:hover {
